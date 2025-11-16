@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cover Letter - Getrude Jepchumba Kipkemoi</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -16,6 +17,33 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             padding: 40px 20px;
             line-height: 1.6;
+        }
+        
+        .download-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        
+        .download-btn:hover {
+            background: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        }
+        
+        .download-btn:active {
+            transform: translateY(0);
         }
         
         .container {
@@ -116,15 +144,6 @@
             font-size: 18px;
         }
         
-        .footer {
-            background: #f8f9fa;
-            padding: 25px;
-            text-align: center;
-            color: #666;
-            font-size: 14px;
-            border-top: 3px solid #667eea;
-        }
-        
         @media print {
             body {
                 background: white;
@@ -133,6 +152,9 @@
             .container {
                 box-shadow: none;
                 border-radius: 0;
+            }
+            .download-btn {
+                display: none;
             }
         }
         
@@ -148,11 +170,19 @@
                 gap: 10px;
                 align-items: center;
             }
+            .download-btn {
+                top: 10px;
+                right: 10px;
+                padding: 10px 20px;
+                font-size: 14px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
+    <button class="download-btn" onclick="downloadPDF()">📥 Download as PDF</button>
+    
+    <div class="container" id="letter-content">
         <div class="header">
             <h1>GETRUDE JEPCHUMBA KIPKEMOI</h1>
             <div class="contact-info">
@@ -202,8 +232,29 @@
             
             <div class="signature">Getrude Kipkemoi</div>
         </div>
-        
-
     </div>
+
+    <script>
+        function downloadPDF() {
+            const element = document.getElementById('letter-content');
+            const button = document.querySelector('.download-btn');
+            
+            // Hide button temporarily
+            button.style.display = 'none';
+            
+            const opt = {
+                margin: 0,
+                filename: 'Getrude_Kipkemoi_Cover_Letter.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, useCORS: true },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            html2pdf().set(opt).from(element).save().then(() => {
+                // Show button again
+                button.style.display = 'block';
+            });
+        }
+    </script>
 </body>
 </html>
